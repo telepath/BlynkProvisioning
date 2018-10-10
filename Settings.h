@@ -2,6 +2,8 @@
  * General options
  */
 
+#ifndef SETTINGS_H
+#define SETTINGS_H
 #define BOARD_FIRMWARE_VERSION        "1.0.1"
 #define BOARD_HARDWARE_VERSION        "1.0.0"
 
@@ -100,3 +102,4 @@
   #define DEBUG_PRINT(...)
 #endif
 
+#endif

@@ -7,6 +7,8 @@
  *                  http://www.blynk.io/
  *
  **************************************************************/
+#ifndef INDICATOR_H
+#define INDICATOR_H
 
 #if defined(BOARD_LED_PIN_WS2812)
   #include <Adafruit_NeoPixel.h>    // Library: https://github.com/adafruit/Adafruit_NeoPixel
@@ -257,3 +259,4 @@ Indicator indicator;
 
 #endif
 
+#endif

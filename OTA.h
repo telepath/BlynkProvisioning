@@ -22,6 +22,8 @@
  * More about ESP8266 OTA updates:
  *  https://github.com/esp8266/Arduino/blob/master/doc/ota_updates/readme.md
  */
+#ifndef OTA_H
+#define OTA_H
 
 #include <ESP8266HTTPClient.h>
 #include <ESP8266httpUpdate.h>
@@ -60,3 +62,4 @@ void enterOTA() {
   }
 }
 
+#endif

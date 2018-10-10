@@ -8,9 +8,12 @@
  *
  **************************************************************/
 
-extern "C" {
-  #include "user_interface.h"
-}
+#ifndef BLYNKPROVISIONING_H
+#define BLYNKPROVISIONING_H
+
+// extern "C" {
+//   #include "user_interface.h"
+// }
 
 #include "Settings.h"
 #include "BlynkState.h"
@@ -53,7 +56,7 @@ public:
 
   void run() {
     switch (BlynkState::get()) {
-    case MODE_WAIT_CONFIG:       
+    case MODE_WAIT_CONFIG:
     case MODE_CONFIGURING:       enterConfigMode();    break;
     case MODE_CONNECTING_NET:    enterConnectNet();    break;
     case MODE_CONNECTING_CLOUD:  enterConnectCloud();  break;
@@ -69,3 +72,4 @@ public:
 
 Provisioning BlynkProvisioning;
 
+#endif

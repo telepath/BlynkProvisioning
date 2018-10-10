@@ -7,6 +7,8 @@
  *                  http://www.blynk.io/
  *
  **************************************************************/
+#ifndef RESETBUTTON_H
+#define RESETBUTTON_H
 
 volatile bool     g_buttonPressed = false;
 volatile uint32_t g_buttonPressTime = -1;
@@ -46,3 +48,4 @@ void button_init()
   attachInterrupt(BOARD_BUTTON_PIN, button_change, CHANGE);
 }
 
+#endif

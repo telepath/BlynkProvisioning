@@ -7,6 +7,8 @@
  *                  http://www.blynk.io/
  *
  **************************************************************/
+#ifndef CONFIGSTORE_H
+#define CONFIGSTORE_H
 
 struct ConfigStore {
   uint32_t  magic;
@@ -31,10 +33,10 @@ const ConfigStore configDefault = {
   0x626C6E6B,
   BOARD_FIRMWARE_VERSION,
   0, 0, 0,
-  
+
   "",
   "",
-  
+
   "invalid token",
   "blynk-cloud.com", 80,
   0
@@ -81,3 +83,4 @@ void CopyString(const String& s, T(&arr)[size]) {
   s.toCharArray(arr, size);
 }
 
+#endif

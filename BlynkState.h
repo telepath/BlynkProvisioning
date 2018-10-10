@@ -8,6 +8,9 @@
  *
  **************************************************************/
 
+#ifndef BLYNKSTATE_H
+#define BLYNKSTATE_H
+
 enum State {
   MODE_WAIT_CONFIG,
   MODE_CONFIGURING,
@@ -45,3 +48,4 @@ namespace BlynkState
   void  set(State m);
 };
 
+#endif

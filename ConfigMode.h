@@ -7,6 +7,8 @@
  *                  http://www.blynk.io/
  *
  **************************************************************/
+#ifndef CONFIGMODE_H
+#define CONFIGMODE_H
 
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
@@ -148,11 +150,11 @@ void enterConfigMode()
 void enterConnectNet() {
   BlynkState::set(MODE_CONNECTING_NET);
   DEBUG_PRINT(String("Connecting to WiFi: ") + configStore.wifiSSID);
-  
+
   WiFi.mode(WIFI_STA);
   if (!WiFi.begin(configStore.wifiSSID, configStore.wifiPass))
     return;
-  
+
   unsigned long timeoutMs = millis() + WIFI_NET_CONNECT_TIMEOUT;
   while ((timeoutMs > millis()) && (WiFi.status() != WL_CONNECTED))
   {
@@ -162,7 +164,7 @@ void enterConnectNet() {
       return;
     }
   }
-  
+
   if (WiFi.status() == WL_CONNECTED) {
     BlynkState::set(MODE_CONNECTING_CLOUD);
   } else {
@@ -187,7 +189,7 @@ void enterConnectCloud() {
       return;
     }
   }
-  
+
   if (Blynk.connected()) {
     BlynkState::set(MODE_RUNNING);
 
@@ -215,7 +217,7 @@ void enterSwitchToSTA() {
 
 void enterError() {
   BlynkState::set(MODE_ERROR);
-  
+
   unsigned long timeoutMs = millis() + 10000;
   while (timeoutMs > millis() || g_buttonPressed)
   {
@@ -230,3 +232,4 @@ void enterError() {
   restartMCU();
 }
 
+#endif
