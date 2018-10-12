@@ -10,6 +10,7 @@
 #define SETTINGS_H
 #include <BlynkSimpleEsp8266.h>
 
+#define BLYNK_PORT                    80
 
 #define BOARD_FIRMWARE_VERSION        "1.0.1"
 #define BOARD_HARDWARE_VERSION        "1.0.0"

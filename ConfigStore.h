@@ -29,6 +29,8 @@ struct ConfigStore {
 
 ConfigStore configStore;
 
+#ifndef BLYNK_DEFAULT_CONFIG
+#define BLYNK_DEFAULT_CONFIG
 const ConfigStore configDefault = {
   0x626C6E6B,
   BOARD_FIRMWARE_VERSION,
@@ -38,9 +40,12 @@ const ConfigStore configDefault = {
   "",
 
   "invalid token",
-  "blynk-cloud.com", 80,
+  "blynk-cloud.com", BLYNK_PORT,
   0
 };
+#else
+extern const ConfigStore configDefault;
+#endif //BLYNK_DEFAULT_CONFIG
 
 #include <EEPROM.h>
 #define EEPROM_CONFIG_START 0
