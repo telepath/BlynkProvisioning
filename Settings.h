@@ -8,7 +8,8 @@
 
 #ifndef SETTINGS_H
 #define SETTINGS_H
-#include <BlynkSimpleEsp8266.h>
+// #include <BlynkSimpleEsp8266.h>
+#include <BlynkSimpleEsp8266_SSL.h>
 
 #define BLYNK_PORT                    80
 
