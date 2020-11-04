@@ -6,12 +6,6 @@
  * To change configuration, copy this file to your code and include it before BlynkProvisioning.h
  */
 
-#ifndef SETTINGS_H
-#define SETTINGS_H
-#include <BlynkSimpleEsp8266.h>
-
-#define BLYNK_PORT                    80
-
 #define BOARD_FIRMWARE_VERSION        "1.0.1"
 #define BOARD_HARDWARE_VERSION        "1.0.0"
 
@@ -52,7 +46,7 @@
   //#define BOARD_LED_PIN_B           13
   //#define BOARD_LED_PIN_WS2812      4                     // Set if your LED is WS2812 RGB
   #define BOARD_LED_INVERSE           false                 // true if LED is common anode, false if common cathode
-  #define BOARD_LED_BRIGHTNESS        32                    // 0..255 brightness control
+  #define BOARD_LED_BRIGHTNESS        64                    // 0..255 brightness control
 
 #elif defined(USE_NODE_MCU_BOARD)
 
@@ -80,7 +74,7 @@
     // #define BOARD_LED_PIN_B             D9
   #endif //LED
   #define BOARD_LED_INVERSE           false
-  #define BOARD_LED_BRIGHTNESS        32
+  #define BOARD_LED_BRIGHTNESS        64
 
 #elif defined(USE_SPARKFUN_BLYNK_BOARD)
 
@@ -91,7 +85,7 @@
   #define BOARD_BUTTON_ACTIVE_LOW     true
 
   #define BOARD_LED_PIN_WS2812        4
-  #define BOARD_LED_BRIGHTNESS        32
+  #define BOARD_LED_BRIGHTNESS        64
 
 #elif defined(USE_WITTY_CLOUD_BOARD)
 
@@ -105,7 +99,7 @@
   #define BOARD_LED_PIN_G             12
   #define BOARD_LED_PIN_B             13
   #define BOARD_LED_INVERSE           false
-  #define BOARD_LED_BRIGHTNESS        32
+  #define BOARD_LED_BRIGHTNESS        64
 
 #else
   #error "No board selected"
@@ -122,7 +116,7 @@
 #define BOARD_PWM_MAX                 1023
 
 #define WIFI_NET_CONNECT_TIMEOUT      30000
-#define WIFI_CLOUD_CONNECT_TIMEOUT    15000
+#define WIFI_CLOUD_CONNECT_TIMEOUT    60000
 #define WIFI_AP_CONFIG_PORT           80
 #define WIFI_AP_IP                    IPAddress(192, 168, 4, 1)
 #define WIFI_AP_Subnet                IPAddress(255, 255, 255, 0)
@@ -132,10 +126,11 @@
 //#define USE_TIMER_ONE
 //#define USE_TIMER_THREE
 
+#define BLYNK_NO_DEFAULT_BANNER
+
 #if defined(APP_DEBUG)
   #define DEBUG_PRINT(...) BLYNK_LOG1(__VA_ARGS__)
 #else
   #define DEBUG_PRINT(...)
 #endif
 
-#endif

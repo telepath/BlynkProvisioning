@@ -7,8 +7,6 @@
  *                  http://www.blynk.io/
  *
  **************************************************************/
-#ifndef RESETBUTTON_H
-#define RESETBUTTON_H
 
 volatile bool     g_buttonPressed = false;
 volatile uint32_t g_buttonPressTime = -1;
@@ -18,21 +16,26 @@ void button_action(void)
   BlynkState::set(MODE_RESET_CONFIG);
 }
 
+ICACHE_RAM_ATTR
 void button_change(void)
 {
 #if BOARD_BUTTON_ACTIVE_LOW
-  g_buttonPressed = !digitalRead(BOARD_BUTTON_PIN);
+  bool buttonState = !digitalRead(BOARD_BUTTON_PIN);
 #else
-  g_buttonPressed = digitalRead(BOARD_BUTTON_PIN);
+  bool buttonState = digitalRead(BOARD_BUTTON_PIN);
 #endif
 
-  if (g_buttonPressed) {
-    DEBUG_PRINT("Hold the button to reset configuration...");
+  if (buttonState && !g_buttonPressed) {
     g_buttonPressTime = millis();
-  } else {
+    g_buttonPressed = true;
+    DEBUG_PRINT("Hold the button to reset configuration...");
+  } else if (!buttonState && g_buttonPressed) {
+    g_buttonPressed = false;
     uint32_t buttonHoldTime = millis() - g_buttonPressTime;
     if (buttonHoldTime >= BUTTON_HOLD_TIME_ACTION) {
       button_action();
+    } else {
+      // User action
     }
     g_buttonPressTime = -1;
   }
@@ -48,4 +51,3 @@ void button_init()
   attachInterrupt(BOARD_BUTTON_PIN, button_change, CHANGE);
 }
 
-#endif

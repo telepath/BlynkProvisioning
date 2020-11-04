@@ -7,9 +7,6 @@
  *                  http://www.blynk.io/
  *
  **************************************************************/
-#ifndef INDICATOR_H
-#define INDICATOR_H
-
 #ifdef BOARD_CHAINABLE_LED
   #include <ChainableLED.h>
   ChainableLED leds(BOARD_LED_SER_PIN1, BOARD_LED_SER_PIN2, BOARD_NUM_LEDS);
@@ -32,7 +29,7 @@ void indicator_run();
 #define BOARD_LED_IS_RGB
 #endif
 
-#define DIMM(x)    (((x)*(BOARD_LED_BRIGHTNESS))/255)
+#define DIMM(x)    ((x)*(BOARD_LED_BRIGHTNESS)/255)
 #define RGB(r,g,b) (DIMM(r) << 16 | DIMM(g) << 8 | DIMM(b) << 0)
 
 class Indicator {
@@ -53,11 +50,19 @@ public:
   }
 
   uint32_t run() {
+    State currState = BlynkState::get();
+
+    // Reset counter if indicator state changes
+    if (m_PrevState != currState) {
+      m_PrevState = currState;
+      m_Counter = 0;
+    }
+
     if (g_buttonPressed) {
       if (millis() - g_buttonPressTime > BUTTON_HOLD_TIME_ACTION)     { return beatLED(COLOR_WHITE,   (int[]){ 100, 100 }); }
       if (millis() - g_buttonPressTime > BUTTON_HOLD_TIME_INDICATION) { return waveLED(COLOR_WHITE,   1000); }
     }
-    switch (BlynkState::get()) {
+    switch (currState) {
     case MODE_RESET_CONFIG:
     case MODE_WAIT_CONFIG:       return beatLED(COLOR_BLUE,    (int[]){ 50, 500 });
     case MODE_CONFIGURING:       return beatLED(COLOR_BLUE,    (int[]){ 200, 200 });
@@ -67,11 +72,6 @@ public:
     case MODE_OTA_UPGRADE:       return beatLED(COLOR_MAGENTA, (int[]){ 50, 50 });
     default:                     return beatLED(COLOR_RED,     (int[]){ 80, 100, 80, 1000 } );
     }
-  }
-
-  void updateState() {
-    m_Counter = 0;
-    indicator_run();
   }
 
 protected:
@@ -129,7 +129,7 @@ protected:
     #endif
   }
 
-#elif defined(BOARD_LED_PIN)
+#elif defined(BOARD_LED_PIN)       // Single color LED
 
   void initLED() {
     pinMode(BOARD_LED_PIN, OUTPUT);
@@ -163,7 +163,7 @@ protected:
   uint32_t beatLED(uint32_t onColor, const T& beat) {
     const uint8_t cnt = sizeof(beat)/sizeof(beat[0]);
     setRGB((m_Counter % 2 == 0) ? onColor : (uint32_t)COLOR_BLACK);
-    uint32_t next = beat[m_Counter];
+    uint32_t next = beat[m_Counter % cnt];
     m_Counter = (m_Counter+1) % cnt;
     return next;
   }
@@ -194,7 +194,7 @@ protected:
   uint32_t beatLED(uint32_t, const T& beat) {
     const uint8_t cnt = sizeof(beat)/sizeof(beat[0]);
     setLED((m_Counter % 2 == 0) ? BOARD_PWM_MAX : 0);
-    uint32_t next = beat[m_Counter];
+    uint32_t next = beat[m_Counter % cnt];
     m_Counter = (m_Counter+1) % cnt;
     return next;
   }
@@ -213,6 +213,7 @@ protected:
 
 private:
   uint8_t m_Counter;
+  State   m_PrevState;
 };
 
 Indicator indicator;
@@ -279,4 +280,3 @@ Indicator indicator;
 
 #endif
 
-#endif
