@@ -8,10 +8,6 @@
  *
  **************************************************************/
 
-extern "C" {
-  #include "user_interface.h"
-}
-
 #include "Settings.h"
 #include "BlynkState.h"
 #include "ConfigStore.h"
