@@ -222,32 +222,36 @@ Indicator indicator;
  * Animation timers
  */
 
-#if defined(USE_TICKER)
+#if defined(USE_TIMER_THREE)
 
-  #include <Ticker.h>
+#include <TimerThree.h>
 
-  Ticker blinker;
-
-  void indicator_run() {
-    uint32_t returnTime = indicator.run();
-    if (returnTime) {
-      blinker.attach_ms(returnTime, indicator_run);
-    }
+void indicator_run()
+{
+  uint32_t returnTime = indicator.run();
+  if (returnTime)
+  {
+    Timer3.initialize(returnTime * 1000);
   }
+}
 
-  void indicator_init() {
-    blinker.attach_ms(100, indicator_run);
-  }
+void indicator_init()
+{
+  Timer3.initialize(100 * 1000);
+  Timer3.attachInterrupt(indicator_run);
+}
 
 #elif defined(USE_TIMER_ONE)
 
-  #include <TimerOne.h>
+#include <TimerOne.h>
 
-  void indicator_run() {
-    uint32_t returnTime = indicator.run();
-    if (returnTime) {
-      Timer1.initialize(returnTime*1000);
-    }
+void indicator_run()
+{
+  uint32_t returnTime = indicator.run();
+  if (returnTime)
+  {
+    Timer1.initialize(returnTime * 1000);
+  }
   }
 
   void indicator_init() {
@@ -255,25 +259,29 @@ Indicator indicator;
     Timer1.attachInterrupt(indicator_run);
   }
 
-#elif defined(USE_TIMER_THREE)
+#elif defined(USE_TICKER)
 
-  #include <TimerThree.h>
+#include <Ticker.h>
 
-  void indicator_run() {
+  Ticker blinker;
+
+  void indicator_run()
+  {
     uint32_t returnTime = indicator.run();
-    if (returnTime) {
-      Timer3.initialize(returnTime*1000);
+    if (returnTime)
+    {
+      blinker.attach_ms(returnTime, indicator_run);
     }
   }
 
-  void indicator_init() {
-    Timer3.initialize(100*1000);
-    Timer3.attachInterrupt(indicator_run);
+  void indicator_init()
+  {
+    blinker.attach_ms(100, indicator_run);
   }
 
 #else
 
-  #warning LED indicator needs a functional timer!
+#warning LED indicator needs a functional timer!
 
   void indicator_run() {}
   void indicator_init() {}
