@@ -97,14 +97,12 @@ static bool config_load_blnkopt()
   return true;
 }
 
-#include <EEPROM.h>
-#define EEPROM_CONFIG_START 0
-
+flashStore = FlashStorage(configStore,ConfigStore);
 void config_load()
 {
-  memset(&configStore, 0, sizeof(configStore));
-  EEPROM.get(EEPROM_CONFIG_START, configStore);
-  if (configStore.magic != configDefault.magic) {
+  configStore=flashStore.read();
+  if (configStore.magic != configDefault.magic)
+  {
     DEBUG_PRINT("Using default config.");
     configStore = configDefault;
     return;
@@ -113,15 +111,13 @@ void config_load()
 
 bool config_save()
 {
-  EEPROM.put(EEPROM_CONFIG_START, configStore);
-  EEPROM.commit();
+  flashStore.write(configStore);
   DEBUG_PRINT("Configuration stored to flash");
   return true;
 }
 
 bool config_init()
 {
-  EEPROM.begin(sizeof(ConfigStore));
   config_load();
   return true;
 }
@@ -133,4 +129,3 @@ void enterResetConfig()
   config_save();
   BlynkState::set(MODE_WAIT_CONFIG);
 }
-
